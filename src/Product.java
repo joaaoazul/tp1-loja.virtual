@@ -11,6 +11,10 @@ public class Product {
         this.stock = stock;
     }
 
+    public Product(String name, double price){
+        this(name, price, 20);
+    }
+
     //Getters de nome, preço e stock do produto
     public String getName() {return this.name;}
 

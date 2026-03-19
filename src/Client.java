@@ -7,6 +7,10 @@ public class Client extends User{
         this.inventory = new Inventory();
     }
 
+    public Client(String name){
+        this(name, 100);
+    }
+
     @Override
     public String getUserType() {
         return "Client";

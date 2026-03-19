@@ -10,6 +10,7 @@ public abstract class User {
 
     }
 
+
     public String getName(){
         return name;
     }
@@ -33,6 +34,11 @@ public abstract class User {
             balance -= amount;
             return true;
         }
+    }
+
+    @Override
+    public String toString(){
+        return name + " "+ getUserType() + " " + balance;
     }
 
     public abstract String getUserType();

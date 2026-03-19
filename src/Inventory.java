@@ -9,6 +9,7 @@ public class Inventory {
     }
 
 
+
     public boolean add(Product p){
         if (size < 100) {
             products[size] = p;
@@ -17,6 +18,11 @@ public class Inventory {
         } else {
             return false;
         }
+    }
+
+    public boolean add(Product p, int quantity){
+        Product copy = new Product(p.getName(), p.getPrice(), quantity);
+        return add(copy);
     }
 
     //Remover produtos do inventário
