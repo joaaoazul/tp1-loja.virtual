@@ -187,6 +187,7 @@ public class StoreInterface {
 
         Client client = (Client) currentUser;
         client.getInventory().add(p, quantity);
+        store.getOwner().deposit(totalCost);
 
         System.out.println("Successfully bought " + quantity + " of " + p.getName() + ".");
         showStoreView();
@@ -266,7 +267,7 @@ public class StoreInterface {
     // Displays the store name, current user, product list and available actions based on user type
     private void showStoreView() {
         System.out.println("------");
-        System.out.println(store.getName());
+        System.out.println("=== " + store.getName() + " ===");
         System.out.println("Current user: " + currentUser.getName() + " (" + (currentUser instanceof Owner ? "Owner" : "Client") + ") " + currentUser.getBalance());
 
         System.out.println("------");

@@ -22,9 +22,15 @@ public class Inventory {
         }
     }
     
-    // Add a copy of a product with a specific quantity.
+    // Add's a copy of the product bought or, if it has already that product in the inv, increases the stock, doesn't create a new product.
     public boolean add(Product p, int quantity){
-        
+        for (int i = 0; i < size; i++){
+            if(products[i].getName().equals(p.getName())){
+                int currentStock = products[i].getStock();
+                products[i].setStock(currentStock + quantity);
+                return true;
+            }
+        }
         Product copy = new Product(p.getName(), p.getPrice(), quantity);
         return add(copy);
     }
