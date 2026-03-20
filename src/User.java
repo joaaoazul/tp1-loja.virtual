@@ -1,4 +1,4 @@
-public abstract class User {
+public class User {
 
     private String name;
     private double balance;
@@ -50,5 +50,7 @@ public abstract class User {
     }
 
     // Return the concrete role label for this user.
-    public abstract String getUserType();
+    public String getUserType(){
+        return "User";
+    }
 }
