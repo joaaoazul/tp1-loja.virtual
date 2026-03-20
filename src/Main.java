@@ -2,28 +2,31 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        // Dono
-        Owner owner = new Owner("John", 100.0);
 
-        // Loja
-        Store store = new Store("Fruit Shop", owner);
+        // Creates initial store owner and store data.
+        Owner owner = new Owner("Rui Costa", 100.0);
 
-        // Clientes
-        Client client1 = new Client("John", 100.0);
-        Client client2 = new Client("Alice", 100.0);
+        Store store = new Store("Ricky Chinaware", owner);
+        //The store's theme is a chinaware or porcelain store, ikea like, that sells plates, mugs, silverware, etc.
+
+        Client client1 = new Client("Vangelis Pavlidis", 100.0);
+        Client client2 = new Client("Cristiano R. Aveiro", 100.0);
         store.add(client1);
         store.add(client2);
 
-        // Produtos iniciais (obrigatório!)
-        Product apple = new Product("Apple", 3.0, 20);
-        Product banana = new Product("Banana", 5.0, 20);
-        Product strawberry = new Product("Strawberry", 2.0, 20);
-        store.getInventory().add(apple);
-        store.getInventory().add(banana);
-        store.getInventory().add(strawberry);
+        Product dinnerPlate = new Product("Dinner Plate", 10.0, 20);
+        Product sidePlate = new Product("Side Plate", 5.0, 20);
+        Product coffeeMug = new Product("Coffee Mug", 2.0, 20);
+        Product fork = new Product("Fork", 1.5, 20);
+        store.getInventory().add(dinnerPlate);
+        store.getInventory().add(sidePlate);
+        store.getInventory().add(coffeeMug);
+        store.getInventory().add(fork);
 
-        // Interface
+
         StoreInterface ui = new StoreInterface(store);
+
+        // Starts the console interface loop.
         ui.start();
     }
 }

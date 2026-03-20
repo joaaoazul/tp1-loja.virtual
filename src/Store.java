@@ -9,6 +9,7 @@ public class Store {
 
 
     public Store(String name, Owner owner){
+        // Initialize store data and fixed-size client list.
         this.name = name;
         this.owner = owner;
         this.inventory = new Inventory();
@@ -17,21 +18,43 @@ public class Store {
 
     }
 
-    public Owner getOwner(){return owner;}
+    public Owner getOwner(){
+        // Return the current store owner.
+        return owner;
+    }
 
-    public String getName() {return name;}
+    public String getName() {
+        // Return the store name.
+        return name;
+    }
 
-    public Inventory getInventory(){return inventory;}
+    public Inventory getInventory(){
+        // Return the store inventory.
+        return inventory;
+    }
 
-    public Client getClients(int index) {return clients[index];}
+    public Client getClients(int index) {
+        // Return a client at the given position.
+        return clients[index];
+    }
 
-    public int getClientCount() {return clientCount;}
+    public int getClientCount() {
+        // Return how many clients are registered.
+        return clientCount;
+    }
 
-    public void setName(String newName){this.name = newName;}
+    public void setName(String newName){
+        // Update the store name.
+        this.name = newName;
+    }
 
-    public void setOwner(Owner owner) {this.owner = owner;}
+    public void setOwner(Owner owner) {
+        // Update the owner reference.
+        this.owner = owner;
+    }
 
     public boolean add(Client client){
+        // Add a client if there is still capacity.
         if (clientCount < 100){
             clients[clientCount] = client;
             clientCount++;

@@ -4,13 +4,15 @@ public class Inventory {
     private int size;
 
     public Inventory(){
+        // Prepares an empty inventory with fixed capacity.
         this.products = new Product[100];
         this.size = 0;
     }
 
 
-
+    // To add a product if there is free space.
     public boolean add(Product p){
+        
         if (size < 100) {
             products[size] = p;
             size ++;
@@ -19,13 +21,15 @@ public class Inventory {
             return false;
         }
     }
-
+    
+    // Add a copy of a product with a specific quantity.
     public boolean add(Product p, int quantity){
+        
         Product copy = new Product(p.getName(), p.getPrice(), quantity);
         return add(copy);
     }
 
-    //Remover produtos do inventário
+    //Removes inventory products by index
     public void remove(int index) {
         if(index < 0 || index >= size){
             return;
@@ -37,8 +41,9 @@ public class Inventory {
         size--;
     }
 
-    //Getter do inventário de produtos
+    //Getter from a product by index
     public Product get(int index) {
+       
        if (index < 0 || index >= size) {
            return null;
        }
@@ -46,11 +51,12 @@ public class Inventory {
     }
 
     public int getSize() {
+        // Return the number of stored products.
         return size;
     }
 
 
-    //Setter do tamanho do array do inventário
+    //Setter for the inventory size (used internally).
    public void setSize(int size){
         this.size = size;
    }
