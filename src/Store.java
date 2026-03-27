@@ -5,6 +5,8 @@ public class Store {
     private Inventory inventory;
     private Client[] clients;
     private int clientCount;
+    //criar const para max clients
+
 
 
 

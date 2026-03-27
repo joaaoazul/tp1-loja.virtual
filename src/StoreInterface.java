@@ -1,4 +1,7 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
+import com.validlib.StringValidator;
+
 
 public class StoreInterface {
     private Store store;
@@ -50,12 +53,36 @@ public class StoreInterface {
     public void handleProductAdd() {
         System.out.print("Input the product name: ");
         String name = scanner.nextLine();
-        System.out.print("Input the product price: ");
-        double price = scanner.nextDouble();
-        scanner.nextLine();
-        store.getInventory().add(new Product(name, price, 20));
-    }
 
+        System.out.print("Input the product price: ");
+        double price;
+        try {
+            price = scanner.nextDouble();
+            scanner.nextLine();
+        } catch (InputMismatchException e) {
+            System.out.println("Error: invalid price. Please enter a number.");
+            scanner.nextLine(); // limpar o buffer
+            return;
+        }
+
+        System.out.println("Input the qtd of stock: ");
+        int stock;
+        try {
+            stock = scanner.nextInt();
+            scanner.nextLine();
+        } catch (InputMismatchException e) {
+            System.out.println("Error: invalid price. Please enter a number.");
+            scanner.nextLine();
+            return;
+        }
+
+        if (stock != 0) {
+            store.getInventory().add(new Product(name, price, stock));
+        } else {
+            store.getInventory().add(new Product(name, price));
+        }
+        ;
+    }
     // Shows the product list and removes the selected product from the store inventory
     public void handleProductRemoval() {
         for (int i = 0; i < store.getInventory().getSize(); i++) {
@@ -101,16 +128,11 @@ public class StoreInterface {
         scanner.nextLine();
 
         if (choosing == 1) {
-            System.out.print("Enter the product's new name: ");
-            name = scanner.nextLine();
+            p.setName(Helpers.askName(scanner));
         } else if (choosing == 2) {
-            System.out.print("Enter the new price: ");
-            price = scanner.nextDouble();
-            scanner.nextLine();
+            p.setPrice(Helpers.askPrice(scanner));
         }
 
-        p.setName(name);
-        p.setPrice(price);
     }
 
     // Shows the product list and increases the stock of the selected product by the given amount
@@ -141,11 +163,23 @@ public class StoreInterface {
 
     // Reads a new store name and renames the store
     public void handleStoreRebrand() {
-        System.out.print("Enter new store name: ");
-        String newName = scanner.nextLine();
-        store.setName(newName);
-        System.out.println("Store rebranded to " + newName + ".");
-        showStoreView();
+
+        while(true){
+            System.out.print("Enter new store name: ");
+            String newName = scanner.nextLine();
+            if (StringValidator.isNullOrEmpty(newName)){
+                System.out.println("The input is invalid, try again.");
+            } else if (!StringValidator.hasLen(newName, 3, 12)){
+                System.out.println("The input is invalid, try again.");
+            } else {
+                store.setName(newName);
+                System.out.println("Store rebranded to " + newName + ".");
+                showStoreView();
+                break;
+            }
+
+        }
+
     }
 
     // Allows the client to buy a product from the store by selecting index and quantity
@@ -267,7 +301,7 @@ public class StoreInterface {
     // Displays the store name, current user, product list and available actions based on user type
     private void showStoreView() {
         System.out.println("------");
-        System.out.println("=== " + store.getName() + " ===");
+        System.out.println("=== " + store.getName() + "  ===");
         System.out.println("Current user: " + currentUser.getName() + " (" + (currentUser instanceof Owner ? "Owner" : "Client") + ") " + currentUser.getBalance());
 
         System.out.println("------");
