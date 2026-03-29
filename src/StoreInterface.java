@@ -22,9 +22,7 @@ public class StoreInterface {
             System.out.println((i + 1) + " - " + store.getClients(i).getName() + " " + store.getClients(i).getBalance());
         }
 
-        System.out.print("Enter the index number: ");
-        int index = scanner.nextInt();
-        scanner.nextLine();
+        int index = Helpers.askInt(scanner, "Enter the index of the client: ");
 
         if (index < 1 || index > store.getClientCount()) {
             System.out.println("Invalid index number, please, try again.");
@@ -43,16 +41,14 @@ public class StoreInterface {
 
     // Registers a new client with the given name and a starting balance of 100
     public void handleClientRegistration() {
-        System.out.print("Please insert new Client's name: ");
-        String name = scanner.nextLine();
+        String name = Helpers.askName(scanner);
         store.add(new Client(name, 100.0));
         System.out.println("Client " + name + " successfully created!");
     }
 
     // Reads a product name and price and adds it to the store inventory with stock of 20
     public void handleProductAdd() {
-        System.out.print("Input the product name: ");
-        String name = scanner.nextLine();
+        String name = Helpers.askName(scanner);
 
         System.out.print("Input the product price: ");
         double price;
@@ -76,7 +72,7 @@ public class StoreInterface {
             return;
         }
 
-        if (stock != 0) {
+        if (stock <= 0) {
             store.getInventory().add(new Product(name, price, stock));
         } else {
             store.getInventory().add(new Product(name, price));
@@ -142,9 +138,7 @@ public class StoreInterface {
             System.out.println((i + 1) + " - " + p.getName() + " x" + p.getStock() + " " + p.getPrice());
         }
 
-        System.out.print("Enter product index: ");
-        int index = scanner.nextInt();
-        scanner.nextLine();
+        int index = Helpers.askInt(scanner, "Please enter the product's index: ");
 
         if (index < 1 || index > store.getInventory().getSize()) {
             System.out.println("Invalid product index, please try again.");
@@ -153,9 +147,11 @@ public class StoreInterface {
 
         Product p = store.getInventory().get(index - 1);
 
-        System.out.print("Enter how much stock do you want to add? ");
-        int amount = scanner.nextInt();
-        scanner.nextLine();
+        int amount = Helpers.askInt(scanner, "Enter how much stock do you want to add? ");
+
+        if (amount <= 0) {
+            System.out.println("The amount cannot be 0 or less");
+        }
         p.setStock(p.getStock() + amount);
 
         System.out.println("Increased stock of product by " + amount + ".");
