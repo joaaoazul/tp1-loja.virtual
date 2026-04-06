@@ -5,21 +5,22 @@ import com.validlib.NumberValidator;
 
 public class Helpers {
 
-    public static String askName(Scanner scanner){
+    public static String askName(Scanner scanner, String prompt, int min, int max){
         while(true){
-            System.out.println("Enter the product's new name: ");
+            System.out.println(prompt);
             String name = scanner.nextLine();
 
-            if(StringValidator.isNullOrEmpty(name) && StringValidator.hasMinLen(name, 2)) { return name; };
+            if(!StringValidator.isNullOrEmpty(name) && StringValidator.hasMinLen(name, min) && StringValidator.hasMaxLen(name, max)) { return name; };
             //else
             System.out.println("The input is invalid, try again.");
         }
     }
 
-    public static double askPrice(Scanner scanner){
+
+    public static double askPrice(Scanner scanner, String prompt){
         while(true){
             try {
-            System.out.println("Enter the new price: ");
+            System.out.println(prompt);
             double value = scanner.nextDouble();
             scanner.nextLine();
 
@@ -51,6 +52,15 @@ public class Helpers {
             int value = askInt(scanner, prompt);
             if(NumberValidator.isPositive(value)) {return value;};
             System.out.println("Value must be greater than 0, try again.");
+        }
+    }
+
+    public static int askIntRange(Scanner scanner, String prompt, int min, int max){
+        while(true) {
+            int value = askInt(scanner, prompt);
+            if(NumberValidator.isInRange(value, min, max)){ return value;}
+            System.out.println("The value " + value + " must be between " + min + " and " + max + ". Please try again.");
+
         }
     }
 
