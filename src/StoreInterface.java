@@ -255,6 +255,8 @@ public class StoreInterface {
         }
     }
 
+    // Displays the client list and adds a given amount to the selected client's balance
+
     public void handleBalance(){
         showClientList();
         int index = Helpers.askPositiveInt(scanner, "Enter the client's index: ");
