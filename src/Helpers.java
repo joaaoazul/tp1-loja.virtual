@@ -47,6 +47,11 @@ public class Helpers {
         }
     }
 
+    public static String formatPrice(double value){
+        return String.format("%.2f €", value);
+
+    }
+
     public static int askPositiveInt(Scanner scanner, String prompt){
         while(true) {
             int value = askInt(scanner, prompt);

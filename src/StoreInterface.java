@@ -17,16 +17,30 @@ public class StoreInterface {
     private void showProductsList(){
         for (int i = 0; i < store.getInventory().getSize(); i++) {
             Product p = store.getInventory().get(i);
-            System.out.println((i + 1) + " - " + p.getName() + " x" + p.getStock() + " " + p.getPrice());
+            System.out.println((i + 1) + " - " + p.getName() + " x" + p.getStock() + " " + Helpers.formatPrice(p.getPrice()));
         }
+    }
+
+    private void showClientList(){
+        System.out.println("List of clients: ");
+        for (int i = 0; i < store.getClientCount(); i++){
+            System.out.println((i + 1) + " - " + store.getClients(i).getName() + " " + Helpers.formatPrice(store.getClients(i).getBalance()));
+
+        }
+    }
+
+
+    private Client requireClient(){
+          if (!(currentUser instanceof Client)) {
+        System.out.println("Option only available for Clients.");
+        return null;
+    }
+    return (Client) currentUser;
     }
 
     // Shows the client list and switches the current user to the selected client
     public void handleSwitchClient() {
-        System.out.println("List of clients: ");
-        for (int i = 0; i < store.getClientCount(); i++) {
-            System.out.println((i + 1) + " - " + store.getClients(i).getName() + " " + store.getClients(i).getBalance());
-        }
+       showClientList();
 
         int index = Helpers.askInt(scanner, "Enter the index of the client: ");
 
@@ -68,7 +82,7 @@ public class StoreInterface {
 
         int index = Helpers.askPositiveInt(scanner, "Enter product index: ");
 
-        if (index > store.getInventory().getSize()) {
+        if (index < 1 || index > store.getInventory().getSize()) {
             System.out.println("Invalid product index, please try again.");
             return;
         }
@@ -130,6 +144,10 @@ public class StoreInterface {
 
     // Allows the client to buy a product from the store by selecting index and quantity
     public void handleBuy() {
+
+        Client client = requireClient();
+        if (client == null) return;
+
         showProductsList();
 
         int index = Helpers.askPositiveInt(scanner, "Enter product index: ");
@@ -151,14 +169,13 @@ public class StoreInterface {
         double totalCost = p.getPrice() * quantity;
         if (totalCost > currentUser.getBalance()) {
             double needed = totalCost - currentUser.getBalance();
-            System.out.println("You don't have enough balance to buy " + quantity + " " + p.getName() + ". You need at least more " + needed + ".");
+            System.out.println("You don't have enough balance to buy " + quantity + " " + p.getName() + ". You need at least more " + Helpers.formatPrice(needed) + ".");
             return;
         }
 
         currentUser.withdraw(totalCost);
         p.setStock(p.getStock() - quantity);
 
-        Client client = (Client) currentUser;
         client.getInventory().add(p, quantity);
         store.getOwner().deposit(totalCost);
 
@@ -168,7 +185,9 @@ public class StoreInterface {
 
     // Allows the client to return a product from their inventory and receive a full refund
     public void handleReturn() {
-        Client client = (Client) currentUser;
+
+        Client client = requireClient();
+        if (client == null) return;
 
         System.out.println(client.getName() + "'s inventory");
 
@@ -179,7 +198,7 @@ public class StoreInterface {
 
         for (int i = 0; i < client.getInventory().getSize(); i++) {
             Product p = client.getInventory().get(i);
-            System.out.println((i + 1) + " - " + p.getName() + " x" + p.getStock() + " " + p.getPrice());
+            System.out.println((i + 1) + " - " + p.getName() + " x" + p.getStock() + " " + Helpers.formatPrice(p.getPrice()));
         }
 
         int index = Helpers.askPositiveInt(scanner, "Enter product index: ");
@@ -220,7 +239,8 @@ public class StoreInterface {
 
     // Displays the current client's inventory with index, name, stock and price of each product
     public void handleInventory() {
-        Client client = (Client) currentUser;
+        Client client = requireClient();
+        if (client == null) return;
 
         System.out.println(client.getName() + "'s Inventory:");
 
@@ -231,15 +251,12 @@ public class StoreInterface {
 
         for (int i = 0; i < client.getInventory().getSize(); i++) {
             Product p = client.getInventory().get(i);
-            System.out.println((i + 1) + " - " + p.getName() + " x" + p.getStock() + " " + p.getPrice());
+            System.out.println((i + 1) + " - " + p.getName() + " x" + p.getStock() + " " + Helpers.formatPrice(p.getPrice()));
         }
     }
 
     public void handleBalance(){
-        System.out.println("List of clients: ");
-        for (int i = 0; i < store.getClientCount(); i++) {
-            System.out.println((i + 1) + " - " + store.getClients(i).getName() + " " + store.getClients(i).getBalance());
-        }
+        showClientList();
         int index = Helpers.askPositiveInt(scanner, "Enter the client's index: ");
 
         if (index > store.getClientCount()) {
@@ -252,7 +269,7 @@ public class StoreInterface {
         double amount = Helpers.askPrice(scanner, "Enter the amount to add: ");
 
         client.deposit(amount);
-        System.out.println("Added " + amount + " to " + client.getName() + "'s balance.");
+        System.out.println("Added " + Helpers.formatPrice(amount) + " to " + client.getName() + "'s balance.");
 
 
     }
@@ -261,7 +278,7 @@ public class StoreInterface {
     private void showStoreView() {
         System.out.println("------");
         System.out.println("=== " + store.getName() + "  ===");
-        System.out.println("Current user: " + currentUser.getName() + " (" + (currentUser instanceof Owner ? "Owner" : "Client") + ") " + currentUser.getBalance());
+        System.out.println("Current user: " + currentUser.getName() + " (" + (currentUser instanceof Owner ? "Owner" : "Client") + ") " + Helpers.formatPrice(currentUser.getBalance()));
 
         System.out.println("------");
         System.out.println("Products");
